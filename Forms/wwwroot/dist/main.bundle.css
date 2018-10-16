@@ -1,0 +1,43 @@
+@media (min-width: 768px) {
+  .dynamic-form-container form .text-alignment-left,
+  .dynamic-form-container form .text-alignment-right {
+    width: 50%; } }
+
+.dynamic-form-container .captcha-center .g-recaptcha,
+.dynamic-form-container .captcha-center .recaptcha-error {
+  width: 304px;
+  margin: 0 auto; }
+
+@media (min-width: 768px) {
+  .dynamic-form-container .captcha-center.col-sm-6 .g-recaptcha {
+    float: right; } }
+
+@media (min-width: 768px) {
+  .dynamic-form-container .captcha-center.col-sm-6 .recaptcha-error {
+    float: right; } }
+
+.dynamic-form-container .form-control {
+  box-shadow: none;
+  border-radius: 0;
+  height: 45px; }
+
+.dynamic-form-container .form-group.submit-center {
+  text-align: center; }
+
+.dynamic-form-container .form-group.col-sm-6.submit-center {
+  text-align: left; }
+
+.dynamic-form-container .form-group.submit-right .submit-1 {
+  float: right; }
+
+.dynamic-form-container .form-group.captcha-right .g-recaptcha,
+.dynamic-form-container .form-group.captcha-right .recaptcha-error {
+  float: right; }
+
+.dynamic-form-container .form-group.same-row {
+  float: left;
+  padding: 0 15px; }
+  .dynamic-form-container .form-group.same-row.submit-right, .dynamic-form-container .form-group.same-row.captcha-right {
+    float: right; }
+  .dynamic-form-container .form-group.same-row.submit-center {
+    text-align: left; }

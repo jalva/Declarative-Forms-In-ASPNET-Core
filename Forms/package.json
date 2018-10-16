@@ -1,0 +1,39 @@
+{
+  "name": "forms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "@babel/runtime": "^7.1.2",
+    "core-js": "^2.5.7",
+    "fragment-cache": "^0.2.1",
+    "lodash": "^4.17.11",
+    "map-cache": "^0.2.2",
+    "nan": "^2.11.1",
+    "webpack-cli": "^3.1.2",
+    "whatwg-fetch": "^3.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.4",
+    "css-loader": "^1.0.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
+    "webpack": "^4.20.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx webpack --config webpack.config.js",
+    "build-dev": "npx webpack --config webpack.config.js --mode=development",
+    "build-dev-w-fetch": "npx webpack --config webpack.w-fetch.config.js --mode=development",
+    "build-w-fetch": "npx webpack --config webpack.w-fetch.config.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

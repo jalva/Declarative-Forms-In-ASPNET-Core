@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="clearfix">
+    <div class="col-sm-8 col-sm-push-2">
+        <h2>
+            This page shows two forms that were declaratively defined on the server-side.
+        </h2>
+        <h4>This declarative method for building forms is useful for building marketing forms that can be defined by non-programmers using a CMS or a JSON file or a database.</h4>
+        <p>The forms have built in server-side recaptcha validation, front-end and server-side form fields validation, email sending capabilities, field-to-email mappings and show/hide field mappings based on query strings, urls, cookies.</p>
+        <p>It also allows for easy hookup of custom form submission logic (see the provided example using Salesforce Pardot Handlers submission in wwwroot/js/pardotFormSubmission.js)</p>
+
+
+        <div class="">
+            <!-- to render a form just pass the id of the existing form (declared server-side) -->
+            @await Component.InvokeAsync("DynamicForm", new { formId = "footerForm1" })
+        </div>
+
+        <div style="margin-top:50px;">
+            @await Component.InvokeAsync(
+                             "DynamicForm",
+                             new
+                             {
+                        // this form is re-using the existing form with id 'footerForm1', and overwrites some of its properties
+                        formId = "footerForm1",
+                                 formOverwrites = new DynamicForm
+                                 {
+                            // define properties to overwrite from existing form
+                            FormTitle = "<div class='text-center'><h2>Second Form Instance</h2><p>this form is re-using the first form but overwritting certain fields, such as this title</p></div>"
+                                     ,
+                                     EmailTo = "some@other.email"
+                                 }
+                             })
+        </div>
+
+    </div>
+</div>

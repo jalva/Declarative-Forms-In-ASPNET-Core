@@ -1,0 +1,120 @@
+﻿
+@using Microsoft.AspNetCore.Html
+
+@model DynamicForm
+
+@{ 
+    var id = Guid.NewGuid();
+}
+
+<div class="dynamic-form-container" style="@(Model.BakcgroundImage != null ? "background-image:url(" + Model.BakcgroundImage + ")" : "")">
+    <div class="">
+        <div class="row">
+            <div class="col-xs-12">
+                @Html.Raw(!string.IsNullOrEmpty(Model.FormTitle) ? Model.FormTitle : "(form not found)")
+
+                <form class="dynamic-form" 
+                      action="@(Model.ApiControllerPath + "/ValidateRecaptcha")"
+                      id="@id"
+                      data-form-id="@Model.FormId"
+                      data-no-captcha="@Model.HideRecaptcha.ToString().ToLower()"
+                      data-success-message="@Model.SuccessMessage"
+                      data-submission-type="@Model.SubmissionType"
+                      data-redirect-url="@Model.SuccessRedirectPage"
+                      data-send-email-url="@(Model.ApiControllerPath + "/SendEmail")">
+
+                      <div class="row">
+
+                      <!-- Render fields in columns -->
+                      
+                        @for(var i=0; i<Model.Columns.Count; i++)
+                        {
+                            var col = Model.Columns[i];
+                            var colWidthClass = "col-sm-" + (12 / Model.Columns.Count);
+                            <div class="@colWidthClass">
+                                @foreach (var field in col.Fields)
+                                {
+                                    @await Component.InvokeAsync("DynamicFormField", new { form = Model, field = field })
+                                }
+                            </div>
+                        }
+
+                    <!-- Render loose fields -->
+                    @for(var i=0; i < Model.Fields.Count; i++)
+                    {
+                        var field = Model.Fields[i];
+                        
+                        @await Component.InvokeAsync("DynamicFormField", new { form = Model, field = field })
+                    }
+
+                    <div class="col-xs-12 form-message-lbl"></div>
+
+                    <div class="clearfix" style="clear:both">
+                        @{ 
+                            var colClass = "";
+                            if(Model.AlignReCaptchaWithSubmitButton && !Model.HideRecaptcha)
+                            {
+                                if(Model.CaptchaAlignment == AlignmentEnum.center && Model.SubmitButtonAlignement == AlignmentEnum.center)
+                                {
+                                    colClass = "col-sm-6";
+                                }
+                                else
+                                {
+                                    colClass = "same-row";
+                                }
+                            }
+                            else
+                            {
+                                colClass = "col-sm-12";
+                            }
+
+                            var margintop = Model.AlignReCaptchaWithSubmitButton && !Model.HideRecaptcha ? "margin-top:33px" : "";
+                        }
+
+                        <!-- if both are aligned to the right render button first -->
+                        @if(Model.AlignReCaptchaWithSubmitButton && !Model.HideRecaptcha)
+                        {
+                            if(Model.CaptchaAlignment == AlignmentEnum.right && Model.SubmitButtonAlignement == AlignmentEnum.right)
+                            {
+                                <div class="form-group @colClass submit-@Model.SubmitButtonAlignement">
+                                    <input class="btn btn-primary submit-1" type="submit" value="@Model.SubmitButtonText" />
+                                </div>
+
+                            }
+                        }
+
+                        @if (!Model.HideRecaptcha)
+                        {
+                            <div class="form-group @colClass captcha-@Model.CaptchaAlignment">
+                                <div class="g-recaptcha" data-sitekey="@(Model.ReCaptchaKey ?? "xxx")" data-theme="light" data-submission-type="image"></div>
+                                <div style="color:red" class="recaptcha-error-lbl"></div>
+                            </div>
+
+                        }
+
+                        @if(!Model.AlignReCaptchaWithSubmitButton || Model.CaptchaAlignment != AlignmentEnum.right || Model.SubmitButtonAlignement != AlignmentEnum.right)
+                        {
+                            <div class="form-group @colClass submit-@Model.SubmitButtonAlignement">
+                                <input class="btn btn-primary submit-1" type="submit" value="@Model.SubmitButtonText" />
+                            </div>
+                        }
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.FormDisclaimer))
+                    {
+                        <div class="form-group col-xs-12 form-disclaimer-section">
+                            @Html.Raw(Model.FormDisclaimer)
+                        </div>
+
+                    }
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+ 

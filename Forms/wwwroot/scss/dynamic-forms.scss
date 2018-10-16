@@ -1,0 +1,75 @@
+﻿.dynamic-form-container {
+    form .text-alignment-left,
+    form .text-alignment-right {
+        @media(min-width:768px) {
+            width: 50%;
+        }
+    }
+
+    .captcha-center {
+        .g-recaptcha,
+        .recaptcha-error {
+            width: 304px;
+            margin: 0 auto;
+        }
+
+        &.col-sm-6 {
+            .g-recaptcha {
+                @media(min-width:768px) {
+                    float: right;
+                }
+            }
+
+            .recaptcha-error {
+                @media(min-width:768px) {
+                    float: right;
+                }
+            }
+        }
+    }
+
+    .form-control {
+        box-shadow: none;
+        border-radius: 0;
+        height: 45px;
+    }
+
+    .form-group {
+        &.submit-center {
+            text-align: center;
+        }
+
+        &.col-sm-6 {
+            &.submit-center {
+                text-align: left;
+            }
+        }
+
+        &.submit-right {
+            .submit-1 {
+                float: right;
+            }
+        }
+
+        &.captcha-right {
+            .g-recaptcha,
+            .recaptcha-error {
+                float: right;
+            }
+        }
+
+        &.same-row {
+            float: left;
+            padding: 0 15px;
+
+            &.submit-right,
+            &.captcha-right {
+                float: right;
+            }
+
+            &.submit-center {
+                text-align: left;
+            }
+        }
+    }
+}

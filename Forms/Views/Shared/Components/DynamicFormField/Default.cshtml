@@ -1,0 +1,238 @@
+﻿
+@model Tuple<DynamicForm, DynamicFormField>
+
+@{ 
+    var form = Model.Item1;
+    var field = Model.Item2;
+
+    var id = Guid.NewGuid().ToString();
+
+
+    string hasMappings<T>(IList<T> mappings)
+    {
+        return mappings != null && mappings.Count > 0 ? "yes" : "";
+
+    }
+
+
+    string getShowHideMappings<T>(IList<T> mappings)
+    {
+        if (mappings == null || mappings.Count == 0)
+            return "";
+
+        var list = new List<dynamic>();
+        foreach (var mapping in mappings)
+        {
+            var hideMapping = mapping as DynamicFormFieldHideMapping;
+            if (hideMapping != null)
+            {
+                dynamic obj = new
+                {
+                    selectedVals = hideMapping.SelectedValues,
+                    controlsToHide = hideMapping.HideControlsWithNames
+
+                };
+                list.Add(obj);
+
+            }
+            var showMapping = mapping as DynamicFormFieldShowMapping;
+            if (showMapping != null)
+            {
+                dynamic obj = new
+                {
+                    selectedVals = showMapping.SelectedValues,
+                    controlsToShow = showMapping.ShowControlsWithNames
+                };
+                list.Add(obj);
+            }
+
+        }
+
+        return Newtonsoft.Json.JsonConvert.SerializeObject(list);
+    }
+
+    string getPrepopulateMappings<T>(IList<T> mappings)
+    {
+        if (mappings == null || mappings.Count == 0)
+            return "";
+
+        var list = new List<dynamic>();
+        foreach (var mapping in mappings)
+        {
+            var qsMapping = mapping as DynamicFormFieldPrepopulateFromQsMapping;
+            if (qsMapping != null)
+            {
+                dynamic obj = new
+                {
+                    qsName = qsMapping.QueryStringName,
+                    qsValue = qsMapping.QueryStringValue,
+                    selectedVals = qsMapping.SelectedValueOverwrite
+                };
+                list.Add(obj);
+            }
+
+            var urlMapping = mapping as DynamicFormFieldPrepopulateFromUrlMapping;
+            if (urlMapping != null)
+            {
+                dynamic obj = new
+                {
+                    urlSegment = urlMapping.UrlSegment,
+                    selectedVals = urlMapping.SelectedValueOverwrite
+                };
+                list.Add(obj);
+            }
+
+            var cookieMapping = mapping as DynamicFormFieldPrepopulateFromCookieMapping;
+            if (cookieMapping != null)
+            {
+                dynamic obj = new
+                {
+                    cookiesName = cookieMapping.CookieName,
+                    cookieValue = cookieMapping.CookieValue,
+                    selectedVals = cookieMapping.SelectedValueOverwrite
+                };
+                list.Add(obj);
+            }
+        }
+
+        return Newtonsoft.Json.JsonConvert.SerializeObject(list);
+    }
+}
+
+@if (!field.HideControl)
+{
+    if (field.Type == DynamicFormFieldType.checkbox)
+    {
+    <div class="checkbox-wrapper @field.GetResponsiveSizesClasses()">
+        <label class="chkboxlabel" for="@id">
+            <input type="checkbox" id="@id" name="@field.NameAttribute" value="@field.ValueAttribute"
+                   @Html.Raw(field.GetValidationAttrs()) tabindex="@field.TabIndex"
+                   data-has-prepopulate-qs-mappings="@hasMappings(field.PrepopulateFromQsMappings)" 
+                   data-prepopulate-qs-mappings="@getPrepopulateMappings(field.PrepopulateFromQsMappings)"
+                   data-has-prepopulate-url-mappings="@hasMappings(field.PrepopulateFromUrlMappings)" 
+                   data-prepopulate-url-mappings="@getPrepopulateMappings(field.PrepopulateFromUrlMappings)"
+                   data-has-prepopulate-cookie-mappings="@hasMappings(field.PrepopulateFromCookieMappings)" 
+                   data-prepopulate-cookie-mappings="@getPrepopulateMappings(field.PrepopulateFromCookieMappings)"
+                   data-has-hide-mappings="@hasMappings(field.HideMappings)" 
+                   data-hide-mappings="@getShowHideMappings(field.HideMappings)"
+                   data-has-show-mappings="@hasMappings(field.ShowMappings)"
+                   data-show-mappings="@getShowHideMappings(field.ShowMappings)"
+                   />
+            @field.Label
+        </label>
+    </div>
+
+    }
+    else if(field.Type == DynamicFormFieldType.checkboxlist)
+    {
+        <div class="form-group checkbox-list-wrapper@(!field.RenderVertically?"-inline":"") @field.GetResponsiveSizesClasses()">
+            <label>@field.Label</label>
+            @foreach (var option in field.Options)
+            {
+                var cbId = Guid.NewGuid().ToString();
+                <label class="chkboxlabel" for="@cbId">
+                    <input type="checkbox" id="@cbId" value="@option.Value"/>@option.Title
+                </label>
+            }
+            <input type="hidden" data-type="@field.Type" name="@field.NameAttribute" 
+                   @Html.Raw(field.GetValidationAttrs()) tabindex="@field.TabIndex" 
+                    data-has-prepopulate-qs-mappings="@hasMappings(field.PrepopulateFromQsMappings)" 
+                    data-prepopulate-qs-mappings="@getPrepopulateMappings(field.PrepopulateFromQsMappings)"
+                    data-has-prepopulate-url-mappings="@hasMappings(field.PrepopulateFromUrlMappings)" 
+                    data-prepopulate-url-mappings="@getPrepopulateMappings(field.PrepopulateFromUrlMappings)"
+                    data-has-prepopulate-cookie-mappings="@hasMappings(field.PrepopulateFromCookieMappings)" 
+                    data-prepopulate-cookie-mappings="@getPrepopulateMappings(field.PrepopulateFromCookieMappings)"
+                    data-has-hide-mappings="@hasMappings(field.HideMappings)" 
+                    data-hide-mappings="@getShowHideMappings(field.HideMappings)"
+                    data-has-show-mappings="@hasMappings(field.ShowMappings)"
+                    data-show-mappings="@getShowHideMappings(field.ShowMappings)"/>
+        </div>
+
+    }
+    else
+    {
+        <div class="form-group @field.GetResponsiveSizesClasses() " style="display:@(field.HideControl || field.Type == DynamicFormFieldType.hidden?"none":"")" >
+            
+            @if (field.Type != DynamicFormFieldType.radio)
+            {
+                <label for="@id">@field.Label</label>
+            }
+
+            @switch (field.Type)
+            {
+                case DynamicFormFieldType.select:
+                    <select class="form-control" id="@id" name="@field.NameAttribute" value="@field.ValueAttribute" 
+                            @Html.Raw(field.GetValidationAttrs()) tabindex="@field.TabIndex"
+                           data-has-prepopulate-qs-mappings="@hasMappings(field.PrepopulateFromQsMappings)" 
+                           data-prepopulate-qs-mappings="@getPrepopulateMappings(field.PrepopulateFromQsMappings)"
+                           data-has-prepopulate-url-mappings="@hasMappings(field.PrepopulateFromUrlMappings)" 
+                           data-prepopulate-url-mappings="@getPrepopulateMappings(field.PrepopulateFromUrlMappings)"
+                           data-has-prepopulate-cookie-mappings="@hasMappings(field.PrepopulateFromCookieMappings)" 
+                           data-prepopulate-cookie-mappings="@getPrepopulateMappings(field.PrepopulateFromCookieMappings)"
+                           data-has-hide-mappings="@hasMappings(field.HideMappings)" 
+                           data-hide-mappings="@getShowHideMappings(field.HideMappings)"
+                           data-has-show-mappings="@hasMappings(field.ShowMappings)"
+                           data-show-mappings="@getShowHideMappings(field.ShowMappings)"
+                            >
+                        @foreach(var option in field.Options)
+                        {
+                            <option value="@option.Value">@option.Title</option>
+
+                        }
+                    </select>
+                    break;
+                case DynamicFormFieldType.textarea:
+                    <textarea class="form-control" id="@id" name="@field.NameAttribute" 
+                              value="@field.ValueAttribute" @Html.Raw(field.GetValidationAttrs()) tabindex="@field.TabIndex"
+                              data-has-prepopulate-qs-mappings="@hasMappings(field.PrepopulateFromQsMappings)" 
+                               data-prepopulate-qs-mappings="@getPrepopulateMappings(field.PrepopulateFromQsMappings)"
+                               data-has-prepopulate-url-mappings="@hasMappings(field.PrepopulateFromUrlMappings)" 
+                               data-prepopulate-url-mappings="@getPrepopulateMappings(field.PrepopulateFromUrlMappings)"
+                               data-has-prepopulate-cookie-mappings="@hasMappings(field.PrepopulateFromCookieMappings)" 
+                               data-prepopulate-cookie-mappings="@getPrepopulateMappings(field.PrepopulateFromCookieMappings)"
+                               data-has-hide-mappings="@hasMappings(field.HideMappings)" 
+                               data-hide-mappings="@getShowHideMappings(field.HideMappings)"
+                               data-has-show-mappings="@hasMappings(field.ShowMappings)"
+                               data-show-mappings="@getShowHideMappings(field.ShowMappings)"
+                              ></textarea>
+                    break;
+                case DynamicFormFieldType.radio:
+                    var radioOptions = field.Options;
+                    <label style="display:block">@field.Label</label>
+                    foreach(var option in radioOptions)
+                    {
+                        <div class="radio@(@field.RenderVertically?"-inline": "")">
+                            <label>
+                                <input type="@field.Type" class="" name="@field.NameAttribute" 
+                                       value="@option.Value" @Html.Raw(field.GetValidationAttrs()) 
+                                       tabindex="@field.TabIndex" />
+                                @option.Title
+                            </label>
+                        </div>
+
+                    }
+                    break;
+                default:
+                    <input id="@id" type="@field.Type" class="form-control" name="@field.NameAttribute"
+                            @Html.Raw(field.GetValidationAttrs()) value="@field.ValueAttribute"
+                            @(string.IsNullOrEmpty(field.Placeholder) ? "" : "placeholder='" + field.Placeholder + "'")  
+                            tabindex="@field.TabIndex" 
+                            data-has-prepopulate-qs-mappings="@hasMappings(field.PrepopulateFromQsMappings)" 
+                            data-prepopulate-qs-mappings="@getPrepopulateMappings(field.PrepopulateFromQsMappings)"
+                            data-has-prepopulate-url-mappings="@hasMappings(field.PrepopulateFromUrlMappings)" 
+                            data-prepopulate-url-mappings="@getPrepopulateMappings(field.PrepopulateFromUrlMappings)"
+                            data-has-prepopulate-cookie-mappings="@hasMappings(field.PrepopulateFromCookieMappings)" 
+                            data-prepopulate-cookie-mappings="@getPrepopulateMappings(field.PrepopulateFromCookieMappings)"
+                            data-has-hide-mappings="@hasMappings(field.HideMappings)" 
+                            data-hide-mappings="@getShowHideMappings(field.HideMappings)"
+                            data-has-show-mappings="@hasMappings(field.ShowMappings)"
+                            data-show-mappings="@getShowHideMappings(field.ShowMappings)"/>
+                    break;
+            }
+            
+        </div>
+
+    }
+
+    
+}
