@@ -1,7 +1,7 @@
 # Declarative-Forms-In-ASPNET-Core
 This repo contains a project that allows for the building of HTML 5 forms programmatically on the server using ASP.Net Core 2.1 and ES6. This declarative approach to building forms on the server-side, can be useful in cases where these forms are managed externally, for example marketing forms declared in a CMS, or a database, or a json file, etc. 
 
-![alt text](dynamic-form.png)
+![dynamic form](https://github.com/jalva/Declarative-Forms-In-ASPNET-Core/blob/master/dynamic-form.PNG)
 
 Forms declared on the server can be easily include on any ASP.Net page using a simple line such as:
 ```
