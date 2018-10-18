@@ -36,7 +36,7 @@ namespace Forms.Models
         public AlignmentEnum SubmitButtonAlignement { get; set; }
         public string SuccessRedirectPage { get; set; }
         public string SuccessMessage { get; set; }
-        public string SubmissionType { get; set; }
+        public SubmissionTypeEnum SubmissionType { get; set; }
 
         public List<DynamicFormColumn> Columns { get; set; }
         public List<DynamicFormField> Fields { get; set; }
@@ -52,5 +52,11 @@ namespace Forms.Models
         left,
         center,
         right
+    }
+
+    public enum SubmissionTypeEnum
+    {
+        None,
+        pardotIframe
     }
 }

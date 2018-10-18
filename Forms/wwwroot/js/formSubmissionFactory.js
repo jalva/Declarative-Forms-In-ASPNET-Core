@@ -2,7 +2,7 @@
 
 var formSubmissionFactory = {
     getSubmission: function (submissionType) {
-        if (submissionType == 'pardot-iframe')
+        if (submissionType == 'pardotIframe') // this string needs to come from the SubmissionTypeEnum
             return pardotFormSubmission;
         // add other supported form submission handlers here
         return null;

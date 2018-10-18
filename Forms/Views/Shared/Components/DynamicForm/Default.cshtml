@@ -19,7 +19,7 @@
                       data-form-id="@Model.FormId"
                       data-no-captcha="@Model.HideRecaptcha.ToString().ToLower()"
                       data-success-message="@Model.SuccessMessage"
-                      data-submission-type="@Model.SubmissionType"
+                      data-submission-type="@Model.SubmissionType.ToString()"
                       data-redirect-url="@Model.SuccessRedirectPage"
                       data-send-email-url="@(Model.ApiControllerPath + "/SendEmail")">
 

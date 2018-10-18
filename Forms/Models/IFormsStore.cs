@@ -34,6 +34,7 @@ namespace Forms.Models
                     AlignReCaptchaWithSubmitButton = true,
                     SubmitButtonAlignement = AlignmentEnum.right,
                     CaptchaAlignment = AlignmentEnum.left,
+                    SubmissionType = SubmissionTypeEnum.None,
 
                     Fields = new List<DynamicFormField>
                     {
