@@ -17,3 +17,36 @@ The forms allow for custom form submission logic to be plugged in with ease. An 
 - pre-populate mappings which is a feature that allows for the pre-population of certain form fields based on the url query string, url path or cookie
 
 The JavaScript is written in ES6 using fetch. It is bundled using webpack, producing two different files: one in ES6 (without transpilation) for modern browsers and one transpiled to ES5 and including all necessary polyfills to support the last 2 versions of all browsers (using @babel-loader's @babel/preset-env preset). The two bundled files (w and w/out the polyfills) are loaded conditiaonlly depending on whether the browser supports 'fetch'.
+
+Here's an example of how this form can be declared programmatically:
+```
+new DynamicForm
+{
+    FormId = "footerForm1",
+    ApiControllerPath = "/api/forms", // url to the re-captcha server-side validation endpoint
+    FormTitle = "<h2>Form 1</h2>",
+    EmailTo = "some@email.com",
+    EmailSubject = "Testing declarative forms",
+    EmailIntro = "Declarative forms in .Net Core",
+    AlignReCaptchaWithSubmitButton = true,
+    SubmitButtonAlignement = AlignmentEnum.right,
+    CaptchaAlignment = AlignmentEnum.left,
+    SubmissionType = SubmissionTypeEnum.None,
+
+    Fields = new List<DynamicFormField>
+    {
+        new DynamicFormField
+        {
+            Type = DynamicFormFieldType.text,
+            Label = "First Name",
+            NameAttribute = "first-name",
+
+            ValidationAttributes = new Dictionary<string, string>()
+            {
+                {"required", "y" }
+            },
+
+            XsWidth = DynamicFormFieldSizeEnum.w100prcnt,
+            SmWidth = DynamicFormFieldSizeEnum.w50prcnt
+        },
+```
