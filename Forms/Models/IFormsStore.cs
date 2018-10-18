@@ -25,9 +25,8 @@ namespace Forms.Models
                 new DynamicForm
                 {
                     FormId = "footerForm1",
-                    ApiControllerPath = "/api/forms",
+                    ApiControllerPath = "/api/forms", // url to the re-captcha server-side validation endpoint
                     FormTitle = "<div class='text-center'><h2>Form 1</h2><p>this form was built declaratively</p></div>",
-                    //ReCaptchaKey = captchaSettings.Value.RecaptchaPublicKey,
                     EmailTo = "jalva01@gmail.com",
                     EmailSubject = "Testing dynamic forms",
                     EmailIntro = "Dynamic forms in .Net Core",
