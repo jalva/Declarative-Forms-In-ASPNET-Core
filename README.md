@@ -12,8 +12,8 @@ The forms allow for custom form submission logic to be plugged in with ease. An 
 - create any type of responsive form layout by defining the responsive widths of the form input fields using the Bootstrap responsive grid classes
 - email sending capabilities
 - google re-captcha server-side validation
-- email recipients can be mapped to the form inputs' selected values, thus allowing dirrent recipients to recieve emails on form submissions depending on user selections
-- show/hide mappings, which allows the showing/hiding of certain form controls based on the values selected in other form controls
+- email mappings which allow different email recipients to recieve emails with form submissions depending on user selections
+- show/hide mappings, which allow the showing/hiding of certain form controls based on the values selected in other form controls
 - pre-populate mappings which is a feature that allows for the pre-population of certain form fields based on the url query string, url path or cookie
 
 The JavaScript is written in ES6 using fetch. It is bundled using webpack, producing two different files: one in ES6 (without transpilation) for modern browsers and one transpiled to ES5 and including all necessary polyfills to support the last 2 versions of all browsers (using @babel-loader's @babel/preset-env preset). The two bundled files (w and w/out the polyfills) are loaded conditiaonlly depending on whether the browser supports 'fetch'.
