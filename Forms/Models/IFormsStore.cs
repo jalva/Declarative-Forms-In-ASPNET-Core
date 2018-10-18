@@ -32,8 +32,8 @@ namespace Forms.Models
                     EmailSubject = "Testing dynamic forms",
                     EmailIntro = "Dynamic forms in .Net Core",
                     AlignReCaptchaWithSubmitButton = true,
-                    SubmitButtonAlignement = AlignmentEnum.center,
-                    CaptchaAlignment = AlignmentEnum.center,
+                    SubmitButtonAlignement = AlignmentEnum.right,
+                    CaptchaAlignment = AlignmentEnum.left,
 
                     Fields = new List<DynamicFormField>
                     {
